@@ -1,11 +1,17 @@
 require("dotenv").config();
-require("@nomiclabs/hardhat-ethers");
-require("@nomiclabs/hardhat-etherscan");
+
 require("@nomiclabs/hardhat-waffle");
-require("hardhat-gas-reporter");
 require("solidity-coverage");
 
+require("hardhat-deploy");
+require("hardhat-gas-reporter");
+
+require("@nomiclabs/hardhat-ethers");
+require("@nomiclabs/hardhat-etherscan");
+
+
 const fs = require("fs");
+
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
@@ -16,6 +22,10 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   }
 });
 
+// 使用私钥
+const accounts = fs.readFileSync(".secret").toString().trim().split(",");
+
+// 读取助记词
 function mnemonic() {
   try {
     return fs.readFileSync("./mnemonic.txt").toString().trim();
@@ -42,9 +52,11 @@ module.exports = {
     bactest: {
       url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
       chainId: 97,
-      accounts: {
-        mnemonic: mnemonic()
-      }
+      accounts: accounts
+      //使用助记词
+      // accounts: { 
+      //   mnemonic: mnemonic()
+      // }
     },
   },
   solidity: {

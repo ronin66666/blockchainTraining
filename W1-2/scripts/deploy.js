@@ -15,7 +15,8 @@ async function main() {
   console.log("Counter deployed to:", counter.address);
 
   let Artifact = await artifacts.readArtifact("Counter");
-
+  
+  //note: 需要手动创建对应的文件
   await writeAbiAddr(Artifact, counter.address, "Counter", network.name);
 
 }
