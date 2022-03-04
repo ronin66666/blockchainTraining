@@ -8,6 +8,6 @@ typechain
 cache
 artifacts
 */mnemonic.txt
-
+*/.secret
 .DS_Store
 .idea
