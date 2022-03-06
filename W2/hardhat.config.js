@@ -16,6 +16,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
     console.log(account.address);
   }
 });
+
 //部署合约账户私钥
 const accounts = fs.readFileSync(".secret").toString().trim().split(",");
 
@@ -40,13 +41,14 @@ const defaultNetwork = "bactest";
 module.exports = {
   defaultNetwork: defaultNetwork,
   networks: {
+    
     localhost: {
       url: "http://127.0.0.1:8545"
     },
     namedAccounts: {
       deployer: { //部署账户默认为0，也可以根据链ID来指定账户：如：1: 0， eth主网使用账户0来部署
         default: 0,
-        // 1: 0, 
+        user1: 1, 
         // 4: 1,
       }
     },
