@@ -1,0 +1,40 @@
+{
+  "name": "w3",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [
+    "react",
+    "workspaces",
+    "yarn"
+  ],
+  "private": true,
+  "scripts": {
+    "run-script": "cd packages/hardhat && npx hardhat run ",
+    "deploy": "yarn workspace hardhat-project deploy",
+    "compile": "yarn workspace hardhat-project compile",
+    "chain": "yarn workspace hardhat-project chain",
+    "node": "yarn workspace hardhat-project chain",
+    "test": "yarn workspace hardhat-project test",
+    "accounts": "yarn workspace hardhat-project accounts",
+    "clean": "cd packages/hardhat && npx hardhat clean",
+    "start": "yarn workspace react-app start"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/@graphprotocol/graph-ts",
+      "**/@graphprotocol/graph-ts/**",
+      "**/hardhat",
+      "**/hardhat/**",
+      "**/hardhat-ts",
+      "**/hardhat-ts/**"
+    ]
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@metamask/detect-provider": "^1.2.0"
+  }
+}
