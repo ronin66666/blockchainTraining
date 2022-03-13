@@ -1,2 +1,19 @@
 {
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/.vs/": true,
+        "**/*.cs": true,
+        "**/*.orig": true,
+        "**/build/": true,
+        "**/debug/": true,
+        "**/dist/": true,
+        "**/node_modules/": true,
+        "**/obj": true,
+        "yarn-error.log": true,
+        "**/yarn-error.log": true,
+     },
 }
