@@ -1,14 +1,12 @@
 ---
-typora-root-url: ../W3
+typora-root-url: ./
 ---
 
 
 
-# 文件夹
+## 文件夹
 deploy ： 部署脚本
 scripts： 其他脚本: 如增发代币脚本
-
-
 
 创建react项目
 
@@ -27,55 +25,10 @@ yarn chain
 W3 % yarn chain
 Started HTTP and WebSocket JSON-RPC server at http://127.0.0.1:8545/
 ```
-# deploy
+## deploy
 1. 部署合约，导出部署`json`文件到web项目中
    `yarn deploy --export-all ../react-app/src/contracts/deployment.json`
 
    ![deploy](/img/deploy.png) 
-
-2. 调用`setVaultRole.ts`脚本设置`Vault`合约为`VaultRole`角色
-
-   `yarn run-script scripts/setVaultRole.ts  `
-
-   ![setVaultRole](/img/setVaultRole.png)
-
-前端测试
-
-![1](/img/1.png)
-
-approve
-
-![approve](/img/approve.png)
-
-![approveResult](/img/approveResult.png)
-
-transfer
-
-![transfer](/img/transfer.png)
-
-![transferSuccess](/img/transferSuccess.png)
-
-withdraw
-
-![withdraw](/img/withdraw.png)
-
-![withdrawSucess](/img/withdrawSucess.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
