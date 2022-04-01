@@ -1,8 +1,8 @@
 import { ethers } from "hardhat";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { LCTokenERC721 } from "../typechain";
+import { ERC2612 } from "../typechain";
 
-const contractName = "LCTokenERC721";
+const contractName = "ERC2612";
 
 async function deployLCToken(hre: HardhatRuntimeEnvironment) {
   const { deployer, user1 } = await hre.getNamedAccounts();
@@ -14,7 +14,7 @@ async function deployLCToken(hre: HardhatRuntimeEnvironment) {
 
   console.log("deploy tokenERC721 address = ", deployResult.address);
 
-  const lcTokenContract = await ethers.getContract<LCTokenERC721>(
+  const lcTokenContract = await ethers.getContract<ERC2612>(
     contractName,
     deployer
   );
