@@ -7,6 +7,9 @@ export type { IERC20Permit } from "./IERC20Permit";
 export type { IERC20Metadata } from "./IERC20Metadata";
 export type { IERC20 } from "./IERC20";
 export type { ERC2612 } from "./ERC2612";
+export type { SimpleAuction } from "./SimpleAuction";
+export type { MicroPaymentChannel } from "./MicroPaymentChannel";
+export type { ReceiverPays } from "./ReceiverPays";
 
 export { ERC20__factory } from "./factories/ERC20__factory";
 export { ERC20Permit__factory } from "./factories/ERC20Permit__factory";
@@ -14,3 +17,6 @@ export { IERC20Permit__factory } from "./factories/IERC20Permit__factory";
 export { IERC20Metadata__factory } from "./factories/IERC20Metadata__factory";
 export { IERC20__factory } from "./factories/IERC20__factory";
 export { ERC2612__factory } from "./factories/ERC2612__factory";
+export { SimpleAuction__factory } from "./factories/SimpleAuction__factory";
+export { MicroPaymentChannel__factory } from "./factories/MicroPaymentChannel__factory";
+export { ReceiverPays__factory } from "./factories/ReceiverPays__factory";

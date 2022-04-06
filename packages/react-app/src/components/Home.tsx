@@ -3,7 +3,6 @@ import { Button, Input } from 'antd';
 import "./Home.css";
 import { accountChanged, connectWallet, ProviderModel, removeAccountChangedListener } from '../helpers/connect';
 import { useEffect, useState } from 'react';
-import { Transfer } from './Transfer';
 
 import { ethers } from 'ethers';
 
@@ -13,13 +12,6 @@ function Home() {
 
     const [providerModel, setProviderModel] = useState<ProviderModel>();
 
-    
-    async function test1(): Promise<Array<string>> {
-        return new Promise((resolve, reject) => {
-            resolve(["aaaa", "bbbb"])
-        });
-    }
-    
     const connectHandle = () => {
         console.log("连接钱包");
         connectWallet()
@@ -29,6 +21,7 @@ function Home() {
             handleAccountsChanged(accounts);
         })
         .catch(error => console.log(error));
+        
     }
 
     function handleAccountsChanged(accounts: Array<string>) {
@@ -43,11 +36,10 @@ function Home() {
         setProviderModel(model); 
      }
 
-    //  const getNetwork = async () => {
-    //     const network = await providerModel?.provider?.getNetwork();  
-    //     console.log(network);
-        
-    //  } 
+     const getNetwork = async () => {
+        const network = await providerModel?.provider?.getNetwork();  
+        console.log(network);
+     } 
 
     useEffect(() => {
 
@@ -67,7 +59,7 @@ function Home() {
                 </Button>
            </div>
            
-           <Transfer model={providerModel}/>
+           {/* <Transfer model={providerModel}/> */}
         </div>
     );
 }

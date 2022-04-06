@@ -39,7 +39,6 @@ const config: HardhatUserConfig = {
       //live: false, //指定是否是一个线上的链，localhost and hardhat where the default is false
       //tags: ["bsctest"] //设置网络别名，可通过hre.network.tags获得
     },
-
   },
   namedAccounts: {
     deployer: {

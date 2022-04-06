@@ -1,7 +1,6 @@
 // https://docs.metamask.io/guide/
 
 import { JsonRpcSigner, Network, Web3Provider } from "@ethersproject/providers";
-import { ethers } from "ethers";
 
 // interface ConnectInfo {
 //     chainId: string;
