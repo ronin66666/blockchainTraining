@@ -19,7 +19,7 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
-interface ERC20PermitInterface extends ethers.utils.Interface {
+interface TestERC20Interface extends ethers.utils.Interface {
   functions: {
     "DOMAIN_SEPARATOR()": FunctionFragment;
     "PERMIT_TYPEHASH()": FunctionFragment;
@@ -27,9 +27,11 @@ interface ERC20PermitInterface extends ethers.utils.Interface {
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
+    "burn(address,uint256)": FunctionFragment;
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
+    "mint(address,uint256)": FunctionFragment;
     "name()": FunctionFragment;
     "nonces(address)": FunctionFragment;
     "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
@@ -58,6 +60,10 @@ interface ERC20PermitInterface extends ethers.utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "burn",
+    values: [string, BigNumberish]
+  ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "decreaseAllowance",
@@ -65,6 +71,10 @@ interface ERC20PermitInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "increaseAllowance",
+    values: [string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "mint",
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
@@ -108,6 +118,7 @@ interface ERC20PermitInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "burn", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "decreaseAllowance",
@@ -117,6 +128,7 @@ interface ERC20PermitInterface extends ethers.utils.Interface {
     functionFragment: "increaseAllowance",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "nonces", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "permit", data: BytesLike): Result;
@@ -153,7 +165,7 @@ export type TransferEvent = TypedEvent<
   [string, string, BigNumber] & { from: string; to: string; value: BigNumber }
 >;
 
-export class ERC20Permit extends BaseContract {
+export class TestERC20 extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -194,7 +206,7 @@ export class ERC20Permit extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: ERC20PermitInterface;
+  interface: TestERC20Interface;
 
   functions: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<[string]>;
@@ -217,6 +229,12 @@ export class ERC20Permit extends BaseContract {
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    burn(
+      from: string,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     decimals(overrides?: CallOverrides): Promise<[number]>;
 
     decreaseAllowance(
@@ -228,6 +246,12 @@ export class ERC20Permit extends BaseContract {
     increaseAllowance(
       spender: string,
       addedValue: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    mint(
+      to: string,
+      amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -286,6 +310,12 @@ export class ERC20Permit extends BaseContract {
 
   balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
+  burn(
+    from: string,
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   decimals(overrides?: CallOverrides): Promise<number>;
 
   decreaseAllowance(
@@ -297,6 +327,12 @@ export class ERC20Permit extends BaseContract {
   increaseAllowance(
     spender: string,
     addedValue: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  mint(
+    to: string,
+    amount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -355,6 +391,12 @@ export class ERC20Permit extends BaseContract {
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
+    burn(
+      from: string,
+      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     decimals(overrides?: CallOverrides): Promise<number>;
 
     decreaseAllowance(
@@ -368,6 +410,12 @@ export class ERC20Permit extends BaseContract {
       addedValue: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    mint(
+      to: string,
+      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
@@ -463,6 +511,12 @@ export class ERC20Permit extends BaseContract {
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
+    burn(
+      from: string,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
 
     decreaseAllowance(
@@ -474,6 +528,12 @@ export class ERC20Permit extends BaseContract {
     increaseAllowance(
       spender: string,
       addedValue: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    mint(
+      to: string,
+      amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -539,6 +599,12 @@ export class ERC20Permit extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    burn(
+      from: string,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     decreaseAllowance(
@@ -550,6 +616,12 @@ export class ERC20Permit extends BaseContract {
     increaseAllowance(
       spender: string,
       addedValue: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    mint(
+      to: string,
+      amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

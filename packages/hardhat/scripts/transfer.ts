@@ -1,68 +1,70 @@
 
 //测试离线签名：A 离线签名 -> B 拿到签名调用合约 permit 校验， 授权， -> B 调用transferFrom转账
 
+import { SignatureLike } from "@ethersproject/bytes";
+import { recoverAddress } from "ethers/lib/utils";
 import { deployments, ethers, getNamedAccounts, network } from "hardhat";
-import { version } from "process";
-import { ERC2612 } from "../typechain";
-import { getPermit, recover, signatureFromPrivateKey } from "./signature";
+import { ERC20Permit, ERC2612 } from "../typechain";
+import { Token } from "../typechain/Token";
+import { getPermitDigest, sign, userPrivateKey } from "./signature";
 
+const contractName = "ERC2612";
 
 async function transfer() {
     const { deployer, user1 } = await getNamedAccounts();
 
-    const contract = await ethers.getContract<ERC2612>("ERC2612", deployer);
+    const contract = await ethers.getContract<ERC2612>(contractName, deployer);
 
-    const tokenAddress = await deployments.get("ERC2612").then(deployment => deployment.address);
+    const tokenAddress = await deployments.get(contractName).then(deployment => deployment.address);
 
     const name = await contract.name();
-    const nonce = (await contract.nonces(deployer)).add(1);
+    let nonce = await contract.nonces(deployer);
     const chainId = Number(network.config.chainId);
+
     const deadline = getTimeAfter(30 * 60 * 1000); //有效时间30分
     const approve = {
         owner: deployer,
         spender: user1,
         value: ethers.utils.parseEther("30000") // A -> B 金额
     }
+
     console.log(`name = ${name}, nonce = ${nonce}, chainId = ${chainId} deadline = ${deadline} approve = ${approve}`);
+    const digest = getPermitDigest(name, tokenAddress, chainId, approve, nonce, deadline);
 
-    //离线签名
-    const sign = signatureFromPrivateKey(name, "1", chainId, contract.address, nonce, deadline, approve);
-
-    // console.log(`A 签名: v = ${sign.v}, r = ${sign.r} s = ${sign.s}`);
-    console.log(`A 签名: v = ${sign}`);
+    const signature = sign(digest, userPrivateKey);
 
 
-    const degist = getPermit(name, version, chainId, tokenAddress, nonce, deadline, approve);
+    const sl: SignatureLike = {
+        r:  "0x" + signature.r.toString('hex'),
+        s: "0x" + signature.s.toString('hex'),
+        v: signature.v
+    };
 
-    const address = recover(degist, sign)
+    console.log(`v = ${sl.v}, r = ${sl.r}, s = ${sl.s}`);
 
+    const address = recoverAddress(digest, sl)
     console.log("address = ", address);
     
+    const contractA = await ethers.getContract<ERC2612>(contractName, user1);
+    const recepit = await contractA.permit(approve.owner, approve.spender, approve.value, deadline, sl.v!, sl.r, sl.s!)
+    .then(
+        (tx) => {
+            tx.wait()
+        }
+        );
+    console.log("recepit = ", recepit);
 
-    //B 验证签名（授权）， 收款
-    // const bContract = await ethers.getContract<ERC2612>("ERC2612", user1);
-  
-    // const recepit = await bContract.permit(deployer, user1, approve.value, deadline, v, r, s).then(tx => tx.wait());
-    // console.log("permit recepit = ", recepit);
-
-
-    // let balance = await bContract.balanceOf(user1)
-    // console.log("balance = ", balance);
-
-    // //收款
-    // let transferRecepit = await bContract.transferFrom(deployer, user1, approve.value).then(tx => tx.wait);
-    // console.log("transfer = ", transferRecepit);
+    let balance = await contractA.balanceOf(user1);
     
-    // balance = await bContract.balanceOf(user1)
-    // console.log("new balance = ", balance);
-
-
-    // transferRecepit = await bContract.transferFrom(deployer, user1, approve.value).then(tx => tx.wait);
-    // console.log("transfer2 = ", transferRecepit);
+    console.log("balance = ", ethers.utils.formatEther(balance));
     
-    // balance = await bContract.balanceOf(user1)
-    // console.log("new balance2 = ", balance);
+    const result = await contractA.transferFrom(approve.owner, approve.spender , approve.value).then(tx => tx.wait());
+    console.log("result = ", result);
 
+     balance = await contractA.balanceOf(user1);
+    
+    console.log("new balance = ", ethers.utils.formatEther(balance));
+    
 }
 
 

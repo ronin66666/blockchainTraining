@@ -32,5 +32,5 @@ Started HTTP and WebSocket JSON-RPC server at http://127.0.0.1:8545/
    ![deploy](/img/deploy.png) 
 
 
-## ERC2612, ERC721
+## ERC2612, ERC721, ERC712, EIP1967合约代理, 
 
