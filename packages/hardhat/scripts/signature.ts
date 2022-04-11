@@ -1,5 +1,5 @@
 import { BigNumberish } from "ethers";
-import { defaultAbiCoder, keccak256, recoverAddress, solidityPack, toUtf8Bytes } from "ethers/lib/utils";
+import { defaultAbiCoder, keccak256, solidityPack, toUtf8Bytes } from "ethers/lib/utils";
 import { ecsign } from "ethereumjs-util";
 
 //函数签名
