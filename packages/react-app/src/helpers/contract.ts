@@ -23,7 +23,7 @@ export async function balanceOf(account: string, signer: Signer): Promise<string
 //接收方先调用签名验证, 验证成功相当于授权了
 export async function permit(owner: string, spender: string, value: BigNumberish, deadline: BigNumberish, signature: ECDSASignature) {
     const contract = getERC2612Contract();
-    const response: TransactionResponse  = await contract.permit(owner, spender, value, deadline, signature.v, signature.r, signature.s).then((tx) => tx.wait());
+    const response: TransactionResponse  = await contract.permit(owner, spender, value, deadline, signature.v, signature.r, signature.s);
     const receipet = await response.wait();
     console.log("permit receipet = ", receipet);
 }

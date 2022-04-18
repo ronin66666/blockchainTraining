@@ -27,7 +27,7 @@ Started HTTP and WebSocket JSON-RPC server at http://127.0.0.1:8545/
 ```
 ## deploy
 1. 部署合约，导出部署`json`文件到web项目中
-   `yarn deploy --export-all ../react-app/src/contracts/deployment.json`
+   `yarn deploy --tags greeter --export-all ../react-app/src/contracts/deployment.json`
 
    ![deploy](/img/deploy.png) 
 
