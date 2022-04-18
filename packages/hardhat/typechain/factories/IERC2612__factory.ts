@@ -8,6 +8,19 @@ import type { IERC2612, IERC2612Interface } from "../IERC2612";
 
 const _abi = [
   {
+    inputs: [],
+    name: "DOMAIN_SEPARATOR",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "address",
@@ -40,7 +53,7 @@ const _abi = [
       },
       {
         internalType: "uint256",
-        name: "amount",
+        name: "value",
         type: "uint256",
       },
       {

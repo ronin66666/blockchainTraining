@@ -21,10 +21,15 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface IERC2612Interface extends ethers.utils.Interface {
   functions: {
+    "DOMAIN_SEPARATOR()": FunctionFragment;
     "nonces(address)": FunctionFragment;
     "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "DOMAIN_SEPARATOR",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "nonces", values: [string]): string;
   encodeFunctionData(
     functionFragment: "permit",
@@ -39,6 +44,10 @@ interface IERC2612Interface extends ethers.utils.Interface {
     ]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "DOMAIN_SEPARATOR",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "nonces", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "permit", data: BytesLike): Result;
 
@@ -89,12 +98,14 @@ export class IERC2612 extends BaseContract {
   interface: IERC2612Interface;
 
   functions: {
+    DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<[string]>;
+
     nonces(owner: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
     permit(
       owner: string,
       spender: string,
-      amount: BigNumberish,
+      value: BigNumberish,
       deadline: BigNumberish,
       v: BigNumberish,
       r: BytesLike,
@@ -103,12 +114,14 @@ export class IERC2612 extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
+  DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
+
   nonces(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
 
   permit(
     owner: string,
     spender: string,
-    amount: BigNumberish,
+    value: BigNumberish,
     deadline: BigNumberish,
     v: BigNumberish,
     r: BytesLike,
@@ -117,12 +130,14 @@ export class IERC2612 extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
+
     nonces(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     permit(
       owner: string,
       spender: string,
-      amount: BigNumberish,
+      value: BigNumberish,
       deadline: BigNumberish,
       v: BigNumberish,
       r: BytesLike,
@@ -134,12 +149,14 @@ export class IERC2612 extends BaseContract {
   filters: {};
 
   estimateGas: {
+    DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<BigNumber>;
+
     nonces(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     permit(
       owner: string,
       spender: string,
-      amount: BigNumberish,
+      value: BigNumberish,
       deadline: BigNumberish,
       v: BigNumberish,
       r: BytesLike,
@@ -149,6 +166,8 @@ export class IERC2612 extends BaseContract {
   };
 
   populateTransaction: {
+    DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     nonces(
       owner: string,
       overrides?: CallOverrides
@@ -157,7 +176,7 @@ export class IERC2612 extends BaseContract {
     permit(
       owner: string,
       spender: string,
-      amount: BigNumberish,
+      value: BigNumberish,
       deadline: BigNumberish,
       v: BigNumberish,
       r: BytesLike,

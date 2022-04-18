@@ -21,17 +21,41 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   }
 });
 
-
 const accounts = fs.readFileSync(".secret").toString().trim().split(",");
 
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
-const defaultNetwork = "bsctest";
+const defaultNetwork = "localhost";
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.4",
+  solidity: {
+    compilers: [
+      {
+        version: "0.8.9",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
+      {
+        version: "0.6.7",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
+    ],
+  },
   defaultNetwork: defaultNetwork,
   networks: {
+    localhost: {
+      url: "http://localhost:8545",
+      accounts: accounts,
+    },
     bsctest: {
       url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
       chainId: 97,

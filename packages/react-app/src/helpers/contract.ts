@@ -7,7 +7,7 @@ export function getERC2612Contract(signer?: Signer) {
 
     const abi = ERC2612Json.abi;
     const address = ERC2612Json.address;
-
+    signer?.sendTransaction
     return new ethers.Contract(address, abi, signer)
 }
 
