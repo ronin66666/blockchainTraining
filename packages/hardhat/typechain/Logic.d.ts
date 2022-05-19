@@ -23,6 +23,7 @@ interface LogicInterface extends ethers.utils.Interface {
   functions: {
     "add(uint256,uint256)": FunctionFragment;
     "getValue()": FunctionFragment;
+    "initial()": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -30,9 +31,11 @@ interface LogicInterface extends ethers.utils.Interface {
     values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "getValue", values?: undefined): string;
+  encodeFunctionData(functionFragment: "initial", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "add", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getValue", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "initial", data: BytesLike): Result;
 
   events: {
     "Added(uint256)": EventFragment;
@@ -98,6 +101,10 @@ export class Logic extends BaseContract {
     ): Promise<ContractTransaction>;
 
     getValue(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    initial(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
   };
 
   add(
@@ -108,14 +115,20 @@ export class Logic extends BaseContract {
 
   getValue(overrides?: CallOverrides): Promise<BigNumber>;
 
+  initial(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     add(
       a: BigNumberish,
       b: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<void>;
 
     getValue(overrides?: CallOverrides): Promise<BigNumber>;
+
+    initial(overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {
@@ -138,6 +151,10 @@ export class Logic extends BaseContract {
     ): Promise<BigNumber>;
 
     getValue(overrides?: CallOverrides): Promise<BigNumber>;
+
+    initial(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -148,5 +165,9 @@ export class Logic extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getValue(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    initial(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
   };
 }

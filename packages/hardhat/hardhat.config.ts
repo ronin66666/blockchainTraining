@@ -59,7 +59,7 @@ const config: HardhatUserConfig = {
     bsctest: {
       url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
       chainId: 97,
-      accounts: accounts,
+      accounts: ['3cd352e32a47d93af584f7715406faf49bfc1980efd0ae85da3c3451184bf4d7', '716088445008fb54daf6e6d8f27ef07a80d93cef07e7e7850dfa05fec3beac00'],
       //live: false, //指定是否是一个线上的链，localhost and hardhat where the default is false
       //tags: ["bsctest"] //设置网络别名，可通过hre.network.tags获得
     },
