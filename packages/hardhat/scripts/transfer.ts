@@ -16,7 +16,7 @@ async function transfer() {
     const contract = await ethers.getContract<ERC2612>(contractName, deployer);
 
     const tokenAddress = await deployments.get(contractName).then(deployment => deployment.address);
-
+    
     const name = await contract.name();
     let nonce = await contract.nonces(deployer);
     const chainId = Number(network.config.chainId);
@@ -25,7 +25,7 @@ async function transfer() {
     const approve = {
         owner: deployer,
         spender: user1,
-        value: ethers.utils.parseEther("30000") // A -> B 金额
+        value: ethers.utils.parseEther("300") // A -> B 金额
     }
 
     console.log(`name = ${name}, nonce = ${nonce}, chainId = ${chainId} deadline = ${deadline} approve = ${approve}`);
@@ -46,13 +46,14 @@ async function transfer() {
     console.log("address = ", address);
     
     const contractA = await ethers.getContract<ERC2612>(contractName, user1);
+    //验证签名，授权
     const recepit = await contractA.permit(approve.owner, approve.spender, approve.value, deadline, sl.v!, sl.r, sl.s!)
-    .then(
-        (tx) => {
-            tx.wait()
-        }
-        );
+    .then(tx => tx.wait());
     console.log("recepit = ", recepit);
+
+    const allowance = await contractA.allowance(approve.owner, approve.spender);
+    console.log("allowance = ", ethers.utils.formatEther(allowance));
+    
 
     let balance = await contractA.balanceOf(user1);
     
